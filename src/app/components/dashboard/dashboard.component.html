@@ -1,0 +1,115 @@
+<div class="dashboard-container">
+    <header class="clearfix">
+        <h3 class="float-left">Emails (Sent)</h3>
+
+        <div class="links float-right">
+            <h6 class="">Hello, Subhan Ahmed</h6>
+            <button #composeBtn class="btn btn-warning" (click)="logout()">
+                <i class="fa fa-power-off"></i>
+            </button>
+            <button class="btn btn-success" (click)="open(content)">
+                <i class="fa fa-paper-plane"></i>
+            </button>
+        </div>
+    </header>
+
+    <hr>
+
+    <ul class="list-group sent-mail-list">
+        <li class="list-group-item" *ngFor="let email of items | async;">
+            <span>To: {{pluckEmails(email.to)}}</span>
+            <p>Subject: {{email.subject}}</p>
+            <div class="actions float-right">
+                <!--<button class="btn btn-primary btn-sm mr-2">Edit</button>-->
+                <button class="btn btn-danger  btn-sm" (click)="deleteItem(email.key)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            <a class="overlay" (click)="clickedEmail = email; open(emailContent)">
+
+            </a>
+        </li>
+    </ul>
+
+    <div class="alert alert-warning" *ngIf="!(items | async)">
+        No emails exists.
+    </div>
+
+    <!-- Save Note Template -->
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Send Email</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="emailForm" #formDirective="ngForm">
+                <div class="form-group">
+                    <tag-input
+                            secondaryPlaceholder="To"
+                            placeholder="Add"
+                            formControlName="to"
+                            [errorMessages]="errorMessages"
+                            [validators]="validators">
+                    </tag-input>
+                </div>
+                <div class="form-group">
+                    <tag-input
+                            secondaryPlaceholder="CC"
+                            placeholder="Add CC"
+                            formControlName="cc"
+                            [errorMessages]="errorMessages"
+                            [validators]="validators">
+                    </tag-input>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Subject" formControlName="subject"
+                           name="subject"/>
+                </div>
+                <div class="form-group">
+                    <ckeditor [editor]="Editor"
+                              [config]="{toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable', 'undo', 'redo']}"
+                              [data]="editorData"
+                              tagName="textarea"
+                              formControlName="content"
+                    ></ckeditor>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <!--<button type="button" class="btn btn-outline-dark"><i class="fas fa-paperclip"></i></button>-->
+            <!--<button type="button" class="btn btn-outline-dark">-->
+            <!--<i class="fas fa-trash"></i>-->
+            <!--</button>-->
+            <button type="button" class="btn btn-outline-dark" (click)="sendEmail(modal, formDirective)" [ladda]="isLoading"
+                    data-spinner-color="#000000" [disabled]="emailForm.invalid">Send
+            </button>
+        </div>
+    </ng-template>
+
+
+    <!-- Show email content -->
+    <ng-template #emailContent let-modal>
+        <div class="modal-header">
+
+
+            <h4 class="modal-title" id="modal-basic-title-2">Send Email</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <strong>To:</strong> {{pluckEmails(clickedEmail.to)}}, <br/>
+            <span *ngIf="clickedEmail.cc"><strong>CC:</strong> {{pluckEmails(clickedEmail.cc)}},<br/></span>
+            <strong>Subject:</strong> {{clickedEmail.subject}}
+            <hr>
+            <div [innerHTML]="clickedEmail.content"></div>
+        </div>
+        <!--<div class="modal-footer">-->
+        <!--<button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>-->
+        <!--</div>-->
+    </ng-template>
+
+
+</div>

@@ -1,0 +1,50 @@
+.dashboard-container {
+  padding: 60px;
+}
+
+header {
+  .links {
+    h6 {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    button {
+      display: inline-block;
+      margin-left: 10px;
+    }
+  }
+}
+
+.sent-mail-list {
+
+  li {
+    position: relative;
+  }
+
+  p {
+    margin: 0;
+  }
+  .actions {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+
+
+  .overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top:0;
+    bottom:0;
+    z-index: 10;
+    cursor: pointer;
+  }
+
+  .btn-danger {
+    position: relative;
+    z-index: 20;
+  }
+
+}

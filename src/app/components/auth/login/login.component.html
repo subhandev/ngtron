@@ -1,0 +1,43 @@
+<div class="login-container">
+
+
+    <!-- Logo -->
+    <figure class="text-center mb-5 mt-3">
+        <img src="https://www.coppermobile.com/content/images/home/logo.png" alt="" class=""></figure>
+    <div class="clearfix"></div>
+
+    <!--<h2 class="mb-4 text-primary">Login Here!</h2>-->
+    <!-- Form -->
+    <form [formGroup]="loginForm" #formDirective="ngForm" (submit)="login()">
+        <!-- Email -->
+        <div class="form-group">
+            <input type="email" class="form-control" formControlName="email" name="email" placeholder="email">
+            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-label">
+                <div *ngIf="email.errors.required">
+                    Field is required
+                </div>
+                <div *ngIf="email.errors.pattern">
+                    Enter valid email
+                </div>
+            </div>
+        </div>
+        <!-- Password -->
+        <div class="form-group">
+            <input type="password" class="form-control" formControlName="password" name="password"
+                   placeholder="password">
+            <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error-label">
+                <div *ngIf="password.errors.required">
+                    Field is required
+                </div>
+            </div>
+        </div>
+        <div class="float-left">
+            <a class="underlineHover">Forgot Password?</a> |
+            <a routerLink="/register">Sign Up</a>
+        </div>
+        <button type="submit" class="btn btn-primary float-right" [ladda]="isLoading" [disabled]="loginForm.invalid">Log
+            In
+        </button>
+        <div class="clearfix"></div>
+    </form>
+</div>
